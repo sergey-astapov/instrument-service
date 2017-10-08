@@ -1,22 +1,20 @@
-package io.instrument.service
+package io.instrument.service.rules
 
 import io.instrument.service.model.Instrument
 import io.instrument.service.model.InstrumentFactorySpec
 import io.instrument.service.repository.InstrumentRepository
-import io.instrument.service.rules.Rule
-import io.instrument.service.rules.impl.SerialRulesProcessStrategy
 import io.instrument.service.rules.impl.SimpleRule
 import spock.lang.Specification
 import spock.lang.Title
 import spock.lang.Unroll
 
 @Title("Instrument Service")
-class InstrumentServiceSpec extends Specification {
+class RulesServiceSpec extends Specification {
     @Unroll("instrument service created: key=#key, source=#source, lastTradingDate=#lastTradingDate, deliveryDate=#deliveryDate, market=#market, label=#label, exchangeCode=#exchangeCode, tradable=#tradable")
     def "instrument command created from args"() {
         given:
         def repo = Mock(InstrumentRepository.class)
-        def sut = new InstrumentService([new SimpleRule()], repo, new SerialRulesProcessStrategy<Rule>())
+        def sut = new RulesService([new SimpleRule()], repo)
 
         when:
         sut.process(args)

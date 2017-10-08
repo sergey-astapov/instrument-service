@@ -14,14 +14,14 @@ class InstrumentFactorySpec extends Specification {
 
         expect:
         assert reslt != null
-        assert reslt.key.get() == key
-        assert reslt.source.get().name() == source
-        assert reslt.lastTradingDate.get() == InstrumentFactory.date(lastTradingDate)
-        assert reslt.deliveryDate.get() == InstrumentFactory.date(deliveryDate)
-        assert reslt.market.get().name() == market
-        assert reslt.label.get() == label
-        assert reslt.exchangeCode == Optional.ofNullable(exchangeCode)
-        reslt.tradable.map { x -> assert x == Boolean.valueOf(tradable) }
+        assert reslt.key == key
+        assert reslt.source.name() == source
+        assert reslt.lastTradingDate == Instrument.date(lastTradingDate)
+        assert reslt.deliveryDate == Instrument.date(deliveryDate)
+        assert reslt.market.name() == market
+        assert reslt.label == label
+        assert reslt.exchangeCode == exchangeCode
+        assert String.valueOf(reslt.tradable).toUpperCase() == String.valueOf(tradable).toUpperCase()
 
         where:
         key                | source  | lastTradingDate | deliveryDate | market   | label                | exchangeCode | tradable

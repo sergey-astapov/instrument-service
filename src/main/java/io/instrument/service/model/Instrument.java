@@ -1,9 +1,12 @@
 package io.instrument.service.model;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Optional;
 
 public class Instrument {
+    private static final String FORMAT = "dd-MM-yyyy";
 
     private final String key;
     private final Source source;
@@ -26,49 +29,61 @@ public class Instrument {
         this.tradable = tradable;
     }
 
-    public Optional<String> getKey() {
-        return Optional.ofNullable(key);
+    public String getKey() {
+        return key;
     }
 
-    public Optional<Source> getSource() {
-        return Optional.ofNullable(source);
+    public Source getSource() {
+        return source;
     }
 
-    public Optional<Date> getLastTradingDate() {
-        return Optional.ofNullable(lastTradingDate);
+    public Date getLastTradingDate() {
+        return lastTradingDate;
     }
 
-    public Optional<Date> getDeliveryDate() {
-        return Optional.ofNullable(deliveryDate);
+    public Date getDeliveryDate() {
+        return deliveryDate;
     }
 
-    public Optional<Market> getMarket() {
-        return Optional.ofNullable(market);
+    public Market getMarket() {
+        return market;
     }
 
-    public Optional<String> getLabel() {
-        return Optional.ofNullable(label);
+    public String getLabel() {
+        return label;
     }
 
-    public Optional<String> getExchangeCode() {
-        return Optional.ofNullable(exchangeCode);
+    public String getExchangeCode() {
+        return exchangeCode;
     }
 
-    public Optional<Boolean> getTradable() {
-        return Optional.ofNullable(tradable);
+    public Boolean getTradable() {
+        return tradable;
     }
 
     public Instrument append(Instrument other) {
         return new Instrument(
-                other.getKey().orElseGet(() -> getKey().orElse(null)),
-                other.getSource().orElseGet(() -> getSource().orElse(null)),
-                other.getLastTradingDate().orElseGet(() -> getLastTradingDate().orElse(null)),
-                other.getDeliveryDate().orElseGet(() -> getDeliveryDate().orElse(null)),
-                other.getMarket().orElseGet(() -> getMarket().orElse(null)),
-                other.getLabel().orElseGet(() -> getLabel().orElse(null)),
-                other.getExchangeCode().orElseGet(() -> getExchangeCode().orElse(null)),
-                other.getTradable().orElseGet(() -> getTradable().orElse(null))
+                Optional.ofNullable(other.getKey()).orElseGet(this::getKey),
+                Optional.ofNullable(other.getSource()).orElseGet(this::getSource),
+                Optional.ofNullable(other.getLastTradingDate()).orElseGet(this::getLastTradingDate),
+                Optional.ofNullable(other.getDeliveryDate()).orElseGet(this::getDeliveryDate),
+                Optional.ofNullable(other.getMarket()).orElseGet(this::getMarket),
+                Optional.ofNullable(other.getLabel()).orElseGet(this::getLabel),
+                Optional.ofNullable(other.getExchangeCode()).orElseGet(this::getExchangeCode),
+                Optional.ofNullable(other.getTradable()).orElseGet(this::getTradable)
         );
+    }
+
+    @Override
+    public String toString() {
+        return "key: " + key +
+                ", source: " + source +
+                ", lastTradingDate: " + format(lastTradingDate) +
+                ", deliveryDate: " + format(deliveryDate) +
+                ", market: " + market +
+                ", label: " + label +
+                ", exchangeCode: " + exchangeCode +
+                ", tradable: " + tradable;
     }
 
     public static Instrument from(Instrument other) {
@@ -82,5 +97,43 @@ public class Instrument {
                 other.exchangeCode,
                 other.tradable
         );
+    }
+
+    public static Instrument withTradable(Boolean tradable) {
+        return new Instrument(
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                tradable
+        );
+    }
+
+    public static Instrument withDates(Date lastTradingDate, Date deliveryDate) {
+        return new Instrument(
+                null,
+                null,
+                lastTradingDate,
+                deliveryDate,
+                null,
+                null,
+                null,
+                null
+        );
+    }
+
+    public static Date date(String s) {
+        try {
+            return new SimpleDateFormat(FORMAT).parse(s);
+        } catch (ParseException e) {
+            throw new IllegalArgumentException(e);
+        }
+    }
+
+    public static String format(Date date) {
+        return new SimpleDateFormat(FORMAT).format(date);
     }
 }

@@ -1,11 +1,8 @@
 package io.instrument.service.model;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import static io.instrument.service.model.Instrument.date;
 
 public class InstrumentFactory {
-    private static final String FORMAT = "dd-MM-yyyy";
 
     public static Instrument from(String[] args) {
         if (args == null) {
@@ -32,13 +29,5 @@ public class InstrumentFactory {
             throw new IllegalArgumentException("Argument #" + i + " should not be null");
         }
         return args[i];
-    }
-
-    public static Date date(String s) {
-        try {
-            return new SimpleDateFormat(FORMAT).parse(s);
-        } catch (ParseException e) {
-            throw new IllegalArgumentException(e);
-        }
     }
 }
