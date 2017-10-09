@@ -38,7 +38,7 @@ class InstrumentDTOSpec extends Specification {
     @Unroll("instrument dto creation failed: key=#key, source=#source, lastTradingDate=#lastTradingDate, deliveryDate=#deliveryDate, market=#market, label=#label, exchangeCode=#exchangeCode, tradable=#tradable")
     def "instrument dto creation failed"() {
         when:
-        new InstrumentDTO.Builder()
+        Instrument.builder()
                 .key(key)
                 .source(source)
                 .lastTradingDate(lastTradingDate)

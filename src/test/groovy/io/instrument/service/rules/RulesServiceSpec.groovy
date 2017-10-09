@@ -8,7 +8,7 @@ import spock.lang.Specification
 import spock.lang.Title
 import spock.lang.Unroll
 
-@Title("Instrument Service")
+@Title("Rules Service")
 class RulesServiceSpec extends Specification {
     @Unroll("instrument service created: key=#key, source=#source, lastTradingDate=#lastTradingDate, deliveryDate=#deliveryDate, market=#market, label=#label, exchangeCode=#exchangeCode, tradable=#tradable")
     def "instrument command created from args"() {
