@@ -9,15 +9,15 @@ import spock.lang.Unroll
 class TradableChangeRuleSpec extends Specification {
     @Unroll("process instrument: key=#key, source=#source, lastTradingDate=#lastTradingDate, deliveryDate=#deliveryDate, market=#market, label=#label, exchangeCode=#exchangeCode, tradable=#tradable")
     def "process instrument"() {
-        given:
+        given: "tradable change rule specified"
         def sut = new TradableChangeRule()
 
-        when:
+        when: "rule was invoked"
         Optional<InstrumentDTO> res = sut.process(InstrumentDTO.builder()
                 .key(key).source(source)
                 .partialBuild())
 
-        then:
+        then: "result contains changes"
         assert res.isPresent()
         res.map {InstrumentDTO x ->
             assert x.tradable == tradable

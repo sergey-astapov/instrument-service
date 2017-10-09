@@ -12,11 +12,11 @@ import spock.lang.Unroll
 class RulesServiceSpec extends Specification {
     @Unroll("instrument service created: key=#key, source=#source, lastTradingDate=#lastTradingDate, deliveryDate=#deliveryDate, market=#market, label=#label, exchangeCode=#exchangeCode, tradable=#tradable")
     def "instrument command created from args"() {
-        given:
+        given: "rules service specified"
         def repo = Mock(InstrumentRepository.class)
         def sut = new RulesService([new TradableChangeRule()], repo)
 
-        when:
+        when: "service was invoked"
         sut.process(InstrumentDTO.builder()
                 .key(key).source(source)
                 .lastTradingDate(lastTradingDate)
@@ -26,7 +26,7 @@ class RulesServiceSpec extends Specification {
                 .tradable(tradable)
                 .build())
 
-        then:
+        then: "repo was invoked"
         1 * repo.add(_) >> { Instrument i ->
             assert i != null
         }

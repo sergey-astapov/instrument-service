@@ -27,10 +27,10 @@ class MemoryInstrumentRepositorySpec extends Specification {
 
     @Unroll("instrument added: key=#key, source=#source, lastTradingDate=#lastTradingDate, deliveryDate=#deliveryDate, market=#market, label=#label, exchangeCode=#exchangeCode, tradable=#tradable")
     def "instrument added"() {
-        given:
+        given: "instrument repository specified"
         def sut = new MemoryInstrumentRepository()
 
-        when:
+        when: "instrument added"
         sut.add(InstrumentFactory.from(InstrumentDTO.builder()
                 .key(key).source(source)
                 .lastTradingDate(lastTradingDate)
@@ -39,7 +39,7 @@ class MemoryInstrumentRepositorySpec extends Specification {
                 .tradable(tradable)
                 .partialBuild()))
 
-        then:
+        then: "repository contains instrument"
         assert sut.findAll().size() == 1
         assert sut.findByKey(key).isPresent()
         assert sut.findBySource(Source.valueOf(source)).size() == 1

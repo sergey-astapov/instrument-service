@@ -13,7 +13,7 @@ import spock.lang.Unroll
 class DateChangeRuleSpec extends Specification {
     @Unroll("process instrument: key=#key, source=#source, lastTradingDate=#lastTradingDate, deliveryDate=#deliveryDate, market=#market, label=#label, exchangeCode=#exchangeCode, tradable=#tradable")
     def "process instrument"() {
-        given:
+        given: "date change rule specified"
         def repo = Stub(InstrumentRepository.class) {
             findBySourceAndKey(Source.LME, exchangeCode) >> Optional.of(
                     new Instrument(key,
@@ -27,13 +27,13 @@ class DateChangeRuleSpec extends Specification {
         }
         def sut = new DateChangeRule(repo)
 
-        when:
+        when: "rule was invoked"
         Optional<InstrumentDTO> res = sut.process(InstrumentDTO.builder()
                 .key(key).source(source)
                 .exchangeCode(exchangeCode)
                 .partialBuild())
 
-        then:
+        then: "result contains changes"
         assert res.isPresent() == present
         res.map {InstrumentDTO x ->
             assert x.lastTradingDate == Instrument.date(lastTradingDate)
