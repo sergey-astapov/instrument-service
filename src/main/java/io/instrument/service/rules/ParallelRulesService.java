@@ -1,6 +1,6 @@
 package io.instrument.service.rules;
 
-import io.instrument.service.model.Instrument;
+import io.instrument.service.api.InstrumentDTO;
 import io.instrument.service.repository.InstrumentRepository;
 
 import java.util.List;
@@ -19,11 +19,11 @@ public class ParallelRulesService extends RulesService {
     }
 
     @Override
-    protected Instrument mergedInstrument(Instrument instrument) {
+    protected InstrumentDTO mergedInstrument(InstrumentDTO dto) {
         try {
-            return executor.submit(() -> merge(getRules().parallelStream(), instrument)).get();
+            return executor.submit(() -> merge(getRules().parallelStream(), dto)).get();
         } catch (InterruptedException | ExecutionException e) {
-            log.severe("merge failed for instrument: " + instrument);
+            log.severe("merge failed for instrument: " + dto);
             throw new IllegalStateException(e);
         }
     }

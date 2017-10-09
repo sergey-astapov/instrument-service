@@ -1,9 +1,9 @@
 package io.instrument.service.rules;
 
-import io.instrument.service.model.Instrument;
+import io.instrument.service.api.InstrumentDTO;
 
 import java.util.Optional;
 
 public interface Rule {
-    Optional<Instrument> process(Instrument instrument);
+    Optional<InstrumentDTO> process(InstrumentDTO instrument);
 }

@@ -1,13 +1,15 @@
 package io.instrument.service.rules;
 
+import io.instrument.service.api.InstrumentDTO;
 import io.instrument.service.model.Instrument;
-import io.instrument.service.model.InstrumentFactory;
 import io.instrument.service.repository.InstrumentRepository;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
+
+import static io.instrument.service.model.InstrumentFactory.from;
 
 public class RulesService {
     private static Logger log = Logger.getLogger(RulesService.class.getName());
@@ -28,25 +30,24 @@ public class RulesService {
         return repo;
     }
 
-    public Instrument process(String[] args) {
-        Instrument instrument = InstrumentFactory.from(args);
-        log.info("Original instrument: " + instrument);
+    public Instrument process(InstrumentDTO dto) {
+        log.info("Original instrument: " + dto);
 
-        Instrument merged = mergedInstrument(instrument);
+        InstrumentDTO merged = mergedInstrument(dto);
         log.info("Merged instrument: " + merged);
 
-        return repo.add(merged);
+        return repo.add(from(merged));
     }
 
-    protected Instrument mergedInstrument(Instrument instrument) {
-        return merge(rules.stream(), instrument);
+    protected InstrumentDTO mergedInstrument(InstrumentDTO dto) {
+        return merge(rules.stream(), dto);
     }
 
-    protected Instrument merge(Stream<Rule> stream, Instrument instrument) {
+    public static InstrumentDTO merge(Stream<Rule> stream, InstrumentDTO dto) {
         return stream
-                .map(r -> r.process(instrument))
+                .map(r -> r.process(dto))
                 .filter(Optional::isPresent)
                 .map(Optional::get)
-                .reduce(instrument, Instrument::append);
+                .reduce(dto, InstrumentDTO::append);
     }
 }
