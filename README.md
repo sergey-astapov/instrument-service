@@ -20,4 +20,4 @@
 
 End to end acceptance citeria tets:
 
-    AcceptanceCriteriaSpec.groovy`
+    AcceptanceCriteriaSpec.groovy
