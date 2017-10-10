@@ -92,7 +92,7 @@ class AcceptanceCriteriaSpec extends Specification {
                 .source("LME")
                 .lastTradingDate("15-03-2018")
                 .deliveryDate("17-03-2018")
-                .market("PB")
+                .market("LME_PB")
                 .label("Lead 13 March 2018")
                 .build()
         dto2 = InstrumentDTO.builder()
