@@ -3,6 +3,7 @@ package io.instrument.service.model;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Objects;
 
 public class Instrument {
     private static final String FORMAT = "dd-MM-yyyy";
@@ -55,6 +56,40 @@ public class Instrument {
     }
 
     @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = hash(key);
+        result = prime * result + hash(source);
+        result = prime * result + hash(lastTradingDate);
+        result = prime * result + hash(deliveryDate);
+        result = prime * result + hash(market);
+        result = prime * result + hash(label);
+        result = prime * result + hash(tradable);
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null) {
+            return false;
+        }
+        if (getClass() != o.getClass()) {
+            return false;
+        }
+        Instrument other = (Instrument) o;
+        return Objects.equals(key, other.key) &&
+                Objects.equals(source, other.source) &&
+                Objects.equals(lastTradingDate, other.lastTradingDate) &&
+                Objects.equals(deliveryDate, other.deliveryDate) &&
+                Objects.equals(market, other.market) &&
+                Objects.equals(label, other.label) &&
+                Objects.equals(tradable, other.tradable);
+    }
+
+    @Override
     public String toString() {
         return "key: " + key +
                 ", source: " + source +
@@ -75,5 +110,9 @@ public class Instrument {
 
     public static String format(Date date) {
         return new SimpleDateFormat(FORMAT).format(date);
+    }
+
+    private static <T> int hash(T v) {
+        return v != null ? v.hashCode() : 0;
     }
 }

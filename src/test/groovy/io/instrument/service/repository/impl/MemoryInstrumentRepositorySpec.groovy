@@ -15,7 +15,6 @@ class MemoryInstrumentRepositorySpec extends Specification {
 
         expect:
         assert sut.findAll().size() == 0
-        assert !sut.findByKey(key).isPresent()
         assert sut.findBySource(Source.valueOf(source)).isEmpty()
         assert !sut.findBySourceAndKey(Source.valueOf(source), key).isPresent()
 
@@ -41,7 +40,6 @@ class MemoryInstrumentRepositorySpec extends Specification {
 
         then: "repository contains instrument"
         assert sut.findAll().size() == 1
-        assert sut.findByKey(key).isPresent()
         assert sut.findBySource(Source.valueOf(source)).size() == 1
         assert sut.findBySourceAndKey(Source.valueOf(source), key).isPresent()
 

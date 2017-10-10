@@ -23,7 +23,7 @@ class AcceptanceCriteriaSpec extends Specification {
         sut.process(dto)
 
         then: """the application publishes the following instrument internally"""
-        def opt = repo.findByKey(dto.key)
+        def opt = repo.findBySourceAndKey(dto.source, dto.key)
         assert opt.isPresent()
         opt.map { Instrument i ->
             assert i.key == dto.key
@@ -58,7 +58,7 @@ class AcceptanceCriteriaSpec extends Specification {
         sut.process(dto)
 
         then: """the application publishes the #dto.key instrument internally"""
-        def opt = repo.findByKey(dto.key)
+        def opt = repo.findBySourceAndKey(dto.source, dto.key)
         assert opt.isPresent()
         opt.map { Instrument i ->
             assert i.key == dto.key
@@ -74,7 +74,7 @@ class AcceptanceCriteriaSpec extends Specification {
         sut.process(dto2)
 
         then: """the application publishes the #dto2.key instrument internally"""
-        def opt2 = repo.findByKey(dto2.key)
+        def opt2 = repo.findBySourceAndKey(dto2.source, dto2.key)
         assert opt2.isPresent()
         opt2.map { Instrument i ->
             assert i.key == dto2.key
