@@ -2,8 +2,9 @@ package io.instrument.service.e2e
 
 import io.instrument.service.api.InstrumentDTO
 import io.instrument.service.model.Instrument
+import io.instrument.service.repository.InstrumentRepository
 import io.instrument.service.repository.impl.MemoryInstrumentRepository
-import io.instrument.service.rules.RulesService
+import io.instrument.service.rules.ParallelRulesService
 import io.instrument.service.rules.impl.DateChangeRule
 import io.instrument.service.rules.impl.TradableChangeRule
 import spock.lang.Specification
@@ -16,7 +17,7 @@ class AcceptanceCriteriaSpec extends Specification {
     def "Story 1: #dto.source instrument"() {
         given: """the #dto.source instrument #dto.key with these details: #dto"""
         def repo = new MemoryInstrumentRepository()
-        def sut = new RulesService([new TradableChangeRule(), new DateChangeRule(repo)], repo)
+        def sut = makeSUT(repo)
 
         when: """When #dto.source publishes instrument #dto.key"""
         sut.process(dto)
@@ -49,7 +50,7 @@ class AcceptanceCriteriaSpec extends Specification {
     def "Story 2: #dto.source and #dto2.source instruments"() {
         given: """the #dto.source instrument #dto.key with these details: #dto"""
         def repo = new MemoryInstrumentRepository()
-        def sut = new RulesService([new TradableChangeRule(), new DateChangeRule(repo)], repo)
+        def sut = makeSUT(repo)
 
         and: """the #dto2.source instrument #dto2.key with these details: #dto2"""
 
@@ -104,5 +105,11 @@ class AcceptanceCriteriaSpec extends Specification {
                 .exchangeCode("PB_03_2018")
                 .tradable("FALSE")
                 .build()
+    }
+
+    def makeSUT(InstrumentRepository repo) {
+        def rules = [new TradableChangeRule(), new DateChangeRule(repo)]
+        new ParallelRulesService(rules, repo, ParallelRulesService.executor())
+        //new RulesService(rules, repo)
     }
 }

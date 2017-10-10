@@ -50,4 +50,28 @@ class MemoryInstrumentRepositorySpec extends Specification {
         "PB_03_2018"       | "LME"   | "15-03-2018"    | "17-03-2018" | "PB"     | "Lead 13 March 2018" | "TRUE"
         "PRIME_PB_03_2018" | "PRIME" | "14-03-2018"    | "18-03-2018" | "LME_PB" | "Lead 13 March 2018" | "FALSE"
     }
+
+    def "duplicated instrument failed"() {
+        given:
+        def sut = new MemoryInstrumentRepository()
+
+        when:
+        sut.add(dto)
+        sut.add(dto)
+
+        then:
+        thrown(IllegalArgumentException)
+
+        where:
+        key                | source  | lastTradingDate | deliveryDate | market   | label                | tradable
+        "PB_03_2018"       | "LME"   | "15-03-2018"    | "17-03-2018" | "PB"     | "Lead 13 March 2018" | "TRUE"
+
+        dto = InstrumentFactory.from(InstrumentDTO.builder()
+                .key(key).source(source)
+                .lastTradingDate(lastTradingDate)
+                .deliveryDate(deliveryDate)
+                .market(market).label(label)
+                .tradable(tradable)
+                .partialBuild())
+    }
 }

@@ -15,6 +15,9 @@ public class MemoryInstrumentRepository implements InstrumentRepository {
 
     @Override
     public Instrument add(Instrument instrument) {
+        if (findByKey(instrument.getKey()).isPresent()) {
+            throw new IllegalArgumentException("Instrument with key: " + instrument.getKey() + "already exists");
+        }
         instruments.add(instrument);
         return instrument;
     }
