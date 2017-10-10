@@ -12,10 +12,12 @@
 
     mvn tests
 
-Specification run results you can find there:
+## Specification run results
 
     target/spock-reports/index.html
 
 ## E2E tests
 
-End to end acceptance citeria tets you can find in ```AcceptanceCriteriaSpec.groovy```
+End to end acceptance citeria tets:
+
+    AcceptanceCriteriaSpec.groovy`
