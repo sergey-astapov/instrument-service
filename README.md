@@ -1,1 +1,21 @@
-# instrument-service
+# Instrument Service
+
+## Current Version
+
+    0.0.1-SNAPSHOT
+
+## How to build
+
+    mvn clean install
+
+## How to run tests
+
+    mvn tests
+
+Specification run results you can find there:
+
+    target/spock-reports/index.html
+
+## E2E tests
+
+End to end acceptance citeria tets you can find in ```AcceptanceCriteriaSpec.groovy```
