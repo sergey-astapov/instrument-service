@@ -9,7 +9,7 @@ import java.util.Optional;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
 
-import static io.instrument.service.model.InstrumentFactory.from;
+import static io.instrument.service.api.InstrumentDTO.instrument;
 
 public class RulesService {
     private static Logger log = Logger.getLogger(RulesService.class.getName());
@@ -36,7 +36,7 @@ public class RulesService {
         InstrumentDTO merged = mergedInstrument(dto);
         log.info("Merged instrument: " + merged);
 
-        return repo.add(from(merged));
+        return repo.add(instrument(merged));
     }
 
     protected InstrumentDTO mergedInstrument(InstrumentDTO dto) {

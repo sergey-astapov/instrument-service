@@ -1,11 +1,13 @@
 package io.instrument.service.repository.impl
 
 import io.instrument.service.api.InstrumentDTO
-import io.instrument.service.model.InstrumentFactory
+
 import io.instrument.service.model.Source
 import spock.lang.Specification
 import spock.lang.Title
 import spock.lang.Unroll
+
+import static io.instrument.service.api.InstrumentDTO.instrument
 
 @Title("Memory Instrument Repository")
 class MemoryInstrumentRepositorySpec extends Specification {
@@ -30,7 +32,7 @@ class MemoryInstrumentRepositorySpec extends Specification {
         def sut = new MemoryInstrumentRepository()
 
         when: "instrument added"
-        sut.add(InstrumentFactory.from(InstrumentDTO.builder()
+        sut.add(instrument(InstrumentDTO.builder()
                 .key(key).source(source)
                 .lastTradingDate(lastTradingDate)
                 .deliveryDate(deliveryDate)
@@ -64,7 +66,7 @@ class MemoryInstrumentRepositorySpec extends Specification {
         key                | source  | lastTradingDate | deliveryDate | market   | label                | tradable
         "PB_03_2018"       | "LME"   | "15-03-2018"    | "17-03-2018" | "PB"     | "Lead 13 March 2018" | "TRUE"
 
-        dto = InstrumentFactory.from(InstrumentDTO.builder()
+        dto = instrument(InstrumentDTO.builder()
                 .key(key).source(source)
                 .lastTradingDate(lastTradingDate)
                 .deliveryDate(deliveryDate)
