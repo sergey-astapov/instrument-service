@@ -10,16 +10,25 @@ import java.util.function.Function;
 import static java.util.Optional.ofNullable;
 
 public class InstrumentDTO {
-    private String key;
-    private Source source;
-    private Date lastTradingDate;
-    private Date deliveryDate;
-    private Market market;
-    private String label;
-    private String exchangeCode;
-    private Boolean tradable;
+    private final String key;
+    private final Source source;
+    private final Date lastTradingDate;
+    private final Date deliveryDate;
+    private final Market market;
+    private final String label;
+    private final String exchangeCode;
+    private final Boolean tradable;
 
-    private InstrumentDTO() {
+    private InstrumentDTO(String key, Source source, Date lastTradingDate, Date deliveryDate, Market market,
+                          String label, String exchangeCode, Boolean tradable) {
+        this.key = key;
+        this.source = source;
+        this.lastTradingDate = lastTradingDate;
+        this.deliveryDate = deliveryDate;
+        this.market = market;
+        this.label = label;
+        this.exchangeCode = exchangeCode;
+        this.tradable = tradable;
     }
 
     public String getKey() {
@@ -183,33 +192,34 @@ public class InstrumentDTO {
         }
 
         public InstrumentDTO build() {
-            InstrumentDTO dto = new InstrumentDTO();
-            dto.key = mandatoryArg(x -> x).apply(key);
-            dto.source = mandatoryArg(Source::valueOf).apply(source);
-            dto.lastTradingDate = mandatoryArg(Instrument::date).apply(lastTradingDate);
-            dto.deliveryDate = mandatoryArg(Instrument::date).apply(deliveryDate);
-            dto.market = mandatoryArg(Market::valueOf).apply(market);
-            dto.label = mandatoryArg(x -> x).apply(label);
+            String exCode = null;
+            Boolean tradableFlag = null;
             if (exchangeCode != null && tradable != null) {
-                dto.exchangeCode = exchangeCode;
-                dto.tradable = mandatoryArg(Boolean::valueOf).apply(tradable);
+                exCode = exchangeCode;
+                tradableFlag = mandatoryArg(Boolean::valueOf).apply(tradable);
             } else if (exchangeCode != null || tradable != null) {
                 throw new IllegalArgumentException("Argument should not be null");
             }
-            return dto;
+            return new InstrumentDTO(
+                    mandatoryArg(x -> x).apply(key),
+                    mandatoryArg(Source::valueOf).apply(source),
+                    mandatoryArg(Instrument::date).apply(lastTradingDate),
+                    mandatoryArg(Instrument::date).apply(deliveryDate),
+                    mandatoryArg(Market::valueOf).apply(market),
+                    mandatoryArg(x -> x).apply(label),
+                    exCode, tradableFlag);
         }
 
         public InstrumentDTO partialBuild() {
-            InstrumentDTO dto = new InstrumentDTO();
-            dto.key = key;
-            dto.source = arg(Source::valueOf).apply(source);
-            dto.lastTradingDate = arg(Instrument::date).apply(lastTradingDate);
-            dto.deliveryDate = arg(Instrument::date).apply(deliveryDate);
-            dto.market = arg(Market::valueOf).apply(market);
-            dto.label = label;
-            dto.exchangeCode = exchangeCode;
-            dto.tradable = arg(Boolean::valueOf).apply(tradable);
-            return dto;
+            return new InstrumentDTO(
+                    key,
+                    arg(Source::valueOf).apply(source),
+                    arg(Instrument::date).apply(lastTradingDate),
+                    arg(Instrument::date).apply(deliveryDate),
+                    arg(Market::valueOf).apply(market),
+                    label,
+                    exchangeCode,
+                    arg(Boolean::valueOf).apply(tradable));
         }
 
         private static <R> Function<String, R> mandatoryArg(Function<String, R> func) {
