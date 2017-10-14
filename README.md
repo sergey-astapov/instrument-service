@@ -21,3 +21,15 @@
 End to end acceptance citeria tets:
 
     AcceptanceCriteriaSpec.groovy
+
+## Test code coerage
+
+### Run coverage
+
+    mvn clean clover:setup test clover:clover
+
+
+### Test code coverage run results
+    
+    cd target\clover\report\index.xml
+

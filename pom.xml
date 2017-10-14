@@ -26,6 +26,11 @@
                     <artifactId>gmavenplus-plugin</artifactId>
                     <version>1.4</version>
                 </plugin>
+                <plugin>
+                    <groupId>com.atlassian.maven.plugins</groupId>
+                    <artifactId>clover-maven-plugin</artifactId>
+                    <version>4.1.2</version>
+                </plugin>
             </plugins>
         </pluginManagement>
         <plugins>
@@ -57,6 +62,14 @@
                         <include>**/*Test.java</include>
                     </includes>
                     <redirectTestOutputToFile>false</redirectTestOutputToFile>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>com.atlassian.maven.plugins</groupId>
+                <artifactId>clover-maven-plugin</artifactId>
+                <configuration>
+                    <cloverDatabase>${project.build.directory}/clover/db/clover.db</cloverDatabase>
+                    <outputDirectory>${project.build.directory}/clover/report</outputDirectory>
                 </configuration>
             </plugin>
         </plugins>
