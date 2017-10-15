@@ -20,7 +20,6 @@ public class MemoryInstrumentRepository implements InstrumentRepository {
         if (instruments.containsKey(key) || instruments.putIfAbsent(key, instrument) != null) {
             throw new IllegalArgumentException("Instrument with key: " + key + "already exists");
         }
-        instruments.put(key, instrument);
         return instrument;
     }
 
