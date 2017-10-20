@@ -61,7 +61,6 @@ End to end acceptance criteria tests:
 
     mvn clean clover:setup test clover:clover
 
-
 ### Test code coverage run results
 
     target/clover/report/index.xml
